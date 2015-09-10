@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//FACEBOOK SDK INITALIZED 
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager= CallbackManager.Factory.create();
 
@@ -48,9 +49,11 @@ public class MainActivity extends ActionBarActivity {
         fbLoginButton=(LoginButton) findViewById(R.id.fb_login_button);
 
 
- //FACEBOOK FUNCTION FOR LOGIN
-
+ //THIS REGISTERCALLBACK WILL OPEN THE FACEBOOK LOGIN AND ASK FOR CREDENTIALS
+ 
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+           
+           //IF LOGIN IS SUCCESFUL
             @Override
             public void onSuccess(LoginResult loginResult) {
 
@@ -62,11 +65,14 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_LONG).show();
             }
 
+            ////IF LOGIN IS CANCELLED
             @Override
             public void onCancel() {
                 Toast.makeText(MainActivity.this, "Login cancelled by user!", Toast.LENGTH_LONG).show();
                 System.out.println("Facebook Login failed!!");
             }
+            
+            //IF LOGIN IS UNSUCCESFUL
 
             @Override
             public void onError(FacebookException e) {
@@ -97,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
         pref=getSharedPreferences("Registration",0);
         editor=pref.edit();
 
-//CHECKBOX FUNTION
+//CHECKBOX FUNTION TO VIEW PASSWORD
 
        check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
            @Override
@@ -114,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
        });
 
 
-//BUTTONS
+//IT WILL CHECK IF THE DATA GIVEN IS VALID OR NOT
 
                button.setOnClickListener(new View.OnClickListener() {
                    @Override
@@ -125,17 +131,22 @@ public class MainActivity extends ActionBarActivity {
                        String pass=edit_pass.getText().toString();
                        String phone=edit_phone.getText().toString();
 
-
+                  // IT CHECKS THE VALID EMAIL
                        if(!isValidEmail(email))
                         {
                            edit_email.setError("Invalid Email");
                            flag=false;
                         }
+                        
+                        
+                  // IT CHECKS THE VALID PASSWORD
                        if(!isValidPassword(pass))
                        {
                            edit_pass.setError("Invalid Password");
                            flag=false;
                        }
+                  
+                  // IT CHECKS THE VALID PHONE NO.
                        if (!isValidPhone(phone))
                        {
                            edit_phone.setError("Invalid phone");
@@ -143,7 +154,7 @@ public class MainActivity extends ActionBarActivity {
                        }
 
 
-
+                  // IF ALL THE DATA IS VALID , THEN SUCCESSFUL
                        if(flag==true)
                        {
                            Toast.makeText(getApplicationContext(), "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
@@ -156,6 +167,7 @@ public class MainActivity extends ActionBarActivity {
                            startActivity(i);
 
                        }
+                        // IF ANY OF THE DATA IS INVALID , THEN UNSUCCESSFUL
                        else
                        {
                            Toast.makeText(getApplicationContext(),"LOGIN UNSUCCESSFUL",Toast.LENGTH_SHORT).show();
@@ -167,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-//FUNCTIONS
+//FUNCTIONS FOR CHECKING THE VALIDITY OF EMAIL
 
     private boolean isValidEmail(String email)
     {
@@ -176,7 +188,7 @@ public class MainActivity extends ActionBarActivity {
         Matcher matcher=pattern.matcher(email);
         return matcher.matches();
     }
-
+//FUNCTIONS FOR CHECKING THE VALIDITY OF PASSWORD
     private boolean isValidPassword(String password)
     {
         if(password!=null && password.length()>6)
@@ -186,7 +198,7 @@ public class MainActivity extends ActionBarActivity {
         else
             return false;
     }
-
+//FUNCTIONS FOR CHECKING THE VALIDITY OF PHONE NO.
     private boolean isValidPhone(String phone)
     {
         if (phone.length()==10)
